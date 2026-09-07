@@ -98,9 +98,14 @@
   gap:clamp(12px,1.4vw,20px);
   margin:0 var(--pad) clamp(56px,8vw,110px);
 }
-.card{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);transition:background .25s,border-color .25s}
-.card:hover{border-color:var(--line)}
-.card:hover{background:var(--steel)}
+/* тло картки трохи світліше за сторінку — інакше вона зливається з фоном
+   і проміжків просто не видно, навіть коли вони є */
+.card{
+  position:relative;display:flex;flex-direction:column;
+  background:#101216;border:1px solid #24272D;
+  transition:background .25s,border-color .25s;
+}
+.card:hover{background:#171A1F;border-color:#33373F}
 .shot{position:relative;display:block;aspect-ratio:4/3;border-bottom:1px solid var(--line)}
 .shot .corner{position:absolute;width:9px;height:9px;border:1px solid var(--sig)}
 .shot .c1{left:7px;top:7px;border-right:0;border-bottom:0}
