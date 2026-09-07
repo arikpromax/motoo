@@ -69,7 +69,18 @@
 
   <div class="chips mono" id="chips"></div>
 
-  <div class="fbar">
+  <div class="filters" id="filters">
+
+  <!-- на телефоні панель ховається під цю кнопку -->
+  <div class="fhead">
+    <button class="fbtn" type="button" id="fToggle" aria-expanded="false" aria-controls="fbar">
+      <svg><use href="#i-gear"/></svg>Фільтри<i class="fbtn-n" id="fActive" hidden>0</i>
+      <svg class="fbtn-cav"><use href="#i-cav"/></svg>
+    </button>
+    <span class="fhead-count mono"><b id="fCountM">0</b> позицій</span>
+  </div>
+
+  <div class="fbar" id="fbar">
     <label class="fld">
       <svg><use href="#i-pin"/></svg>
       <select id="fCity" aria-label="Місто">
@@ -113,6 +124,8 @@
     </div>
 
     <div class="fcount"><b id="fCount">0</b> позицій</div>
+  </div>
+
   </div>
 
   <div class="grid" id="grid" data-saved-view></div>
@@ -271,6 +284,15 @@
     }
     MM.reveal();
 
+    /* лічильники біля кнопки «Фільтри» на телефоні */
+    document.getElementById('fCountM').textContent = list.length;
+    var nActive = (state.q ? 1 : 0) + (state.cat !== 'all' ? 1 : 0) + (state.city !== 'Всі міста' ? 1 : 0)
+                + (state.cc !== 'any' ? 1 : 0) + (state.stock !== 'any' ? 1 : 0)
+                + ((state.min > 0 || state.max < MAXP) ? 1 : 0);
+    var badge = document.getElementById('fActive');
+    badge.textContent = nActive;
+    badge.hidden = (nActive === 0);
+
     document.getElementById('pTitle').textContent = state.cat === 'all' ? 'Техніка' : MM.catName(state.cat);
     document.getElementById('crumbNow').textContent = document.getElementById('pTitle').textContent;
 
@@ -333,6 +355,13 @@
     price.set(0, MAXP);
     drawChips();
     draw();
+  });
+
+  /* на телефоні панель фільтрів згорнута — розгортається кнопкою */
+  var filters = document.getElementById('filters');
+  document.getElementById('fToggle').addEventListener('click', function(){
+    var open = filters.classList.toggle('open');
+    this.setAttribute('aria-expanded', String(open));
   });
 
   drawChips();

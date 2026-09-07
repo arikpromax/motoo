@@ -526,3 +526,38 @@
   .crt-del{position:absolute;top:18px;right:0}
   .crt-foot{align-items:flex-start}
 }
+
+/* ============================================================
+   ФІЛЬТРИ ПІД КНОПКОЮ (телефон і планшет)
+   На вузькому екрані панель займала пів екрана до першого товару,
+   тому згортається; на десктопі кнопки немає й панель завжди відкрита.
+   ============================================================ */
+.fhead{display:none}
+
+@media (max-width:1000px){
+  .fhead{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin:0 var(--pad) 12px;
+  }
+  .fbtn{
+    display:inline-flex;align-items:center;gap:10px;padding:15px 16px;
+    border:1px solid var(--line);color:var(--paper);
+    font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    transition:border-color .2s;
+  }
+  .fbtn:hover,.filters.open .fbtn{border-color:var(--sig)}
+  .fbtn > svg:first-child{width:15px;height:15px;color:var(--sig);flex:none}
+  .fbtn-cav{width:11px;height:11px;color:var(--paper-dim);flex:none;transition:transform .25s}
+  .filters.open .fbtn-cav{transform:rotate(180deg)}
+  .fbtn-n{
+    min-width:19px;height:19px;padding:0 5px;font-style:normal;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--sig);color:#fff;font-size:10px;letter-spacing:0;
+  }
+  .fhead-count{color:var(--paper-dim);font-size:11px;letter-spacing:.16em;white-space:nowrap}
+  .fhead-count b{color:var(--paper);font-weight:500}
+
+  .fbar{display:none}
+  .filters.open .fbar{display:flex}
+  .fbar .fcount{display:none}   /* кількість уже показана біля кнопки */
+}
