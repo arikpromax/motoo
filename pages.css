@@ -92,12 +92,14 @@
 .fcount b{color:var(--paper);font-weight:500;margin-right:6px}
 
 /* ---------------- СІТКА КАРТОК ---------------- */
+/* картки стоять окремими блоками з проміжком, а не суцільною решіткою */
 .grid{
   display:grid;grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--line);border-left:1px solid var(--line);
+  gap:clamp(12px,1.4vw,20px);
   margin:0 var(--pad) clamp(56px,8vw,110px);
 }
-.card{position:relative;display:flex;flex-direction:column;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .25s}
+.card{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);transition:background .25s,border-color .25s}
+.card:hover{border-color:var(--line)}
 .card:hover{background:var(--steel)}
 .shot{position:relative;display:block;aspect-ratio:4/3;border-bottom:1px solid var(--line)}
 .shot .corner{position:absolute;width:9px;height:9px;border:1px solid var(--sig)}
@@ -127,7 +129,7 @@
 .c-go{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);color:var(--paper-dim);transition:background .2s,color .2s,border-color .2s}
 .c-go svg{width:16px;height:16px}
 .c-go:hover{background:var(--sig);border-color:var(--sig);color:#fff}
-.empty{grid-column:1 / -1;padding:clamp(40px,7vw,90px) 22px;text-align:center;color:var(--paper-dim);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.empty{grid-column:1 / -1;padding:clamp(40px,7vw,90px) 22px;text-align:center;color:var(--paper-dim);border:1px solid var(--line)}
 .empty b{display:block;font-family:var(--f-disp);font-weight:900;font-size:clamp(26px,3.4vw,44px);color:var(--paper);text-transform:uppercase;margin-bottom:10px}
 
 /* ---------------- СТОРІНКА МОДЕЛІ ---------------- */
