@@ -65,7 +65,7 @@
 
   <div class="hero-inner">
     <p class="eyebrow" id="heroKick">Продаж <i>|</i> Підбір <i>|</i> Обмін</p>
-    <h1 class="hero-h1" id="heroTitle">Мототехніка<br>для справжніх</h1>
+    <h1 class="hero-h1" id="heroTitle">Мототехніка</h1>
     <p class="hero-sub" id="heroSub">Більше 20 років допомагаємо обирати техніку,<br>яка дарує емоції та свободу руху.</p>
 
     <form class="finder" id="finder">
@@ -547,10 +547,27 @@
     a.appendChild(img);
     return a;
   }
-  /* друга копія — щоб стрічка зациклювалась без стрибка */
-  [0, 1].forEach(function(pass){
-    BRAND_LOGOS.forEach(function(b){ track.appendChild(brandMark(b, pass === 1)); });
-  });
+  /* Копій завжди парна кількість: анімація зсуває стрічку рівно на пів довжини,
+     тож половина треку має бути не вужчою за екран — інакше в циклі
+     проступає порожнє місце. Ширину міряємо після завантаження картинок. */
+  function addSet(dup){
+    BRAND_LOGOS.forEach(function(b){ track.appendChild(brandMark(b, dup)); });
+  }
+  addSet(false); addSet(true);
+
+  function fillTrack(){
+    var box = document.getElementById('brandMarq');
+    var sets = track.children.length / BRAND_LOGOS.length;
+    var one = track.scrollWidth / sets;
+    if (!one || !box.clientWidth) return;
+    var guard = 0;
+    while (one * (sets / 2) < box.clientWidth && sets < 10 && guard++ < 5){
+      addSet(true); addSet(true);
+      sets += 2;
+    }
+  }
+  window.addEventListener('load', fillTrack);
+  window.addEventListener('resize', fillTrack);
 
   /* --- ціна: повзунок «від — до» у випадному блоці --- */
   var fld = document.getElementById('priceFld');

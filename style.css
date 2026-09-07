@@ -132,7 +132,9 @@ footer .brandmark img{height:clamp(38px,4vw,54px)}
 .hero-h1{
   margin:0 0 clamp(16px,2vw,26px);
   font-family:var(--f-text);font-weight:800;text-transform:uppercase;
-  font-size:clamp(36px,5.4vw,80px);line-height:1.02;letter-spacing:-.024em;
+  /* заголовок в один рядок — тому набирається значно більшим,
+     інакше слово загубиться в порожньому першому екрані */
+  font-size:clamp(44px,8.6vw,126px);line-height:1;letter-spacing:-.028em;
 }
 .hero-sub{margin:0 0 clamp(26px,3.6vw,44px);max-width:48ch;color:var(--paper-dim);font-size:clamp(14px,1.15vw,16.5px);line-height:1.62}
 
@@ -272,6 +274,16 @@ footer .brandmark img{height:clamp(38px,4vw,54px)}
 .bmarq-track{display:flex;width:max-content;animation:bslide 40s linear infinite}
 .bmarq:hover .bmarq-track{animation-play-state:paused}
 @keyframes bslide{to{transform:translateX(-50%)}}
+
+/* Якщо в системі увімкнено «зменшити рух» (iOS Accessibility, енергозбереження
+   Android), глобальне правило гасить анімацію — і стрічка застигала намертво.
+   У цьому режимі не рухаємо її самі, але даємо гортати пальцем. */
+@media (prefers-reduced-motion:reduce){
+  .bmarq{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .bmarq::-webkit-scrollbar{display:none}
+  .bmarq::before,.bmarq::after{display:none}
+  .bmarq-track{animation:none;transform:none}
+}
 .bmark{
   flex:none;display:flex;align-items:center;justify-content:center;
   height:clamp(78px,9vw,120px);padding:0 clamp(26px,3.6vw,60px);
