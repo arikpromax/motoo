@@ -58,12 +58,69 @@ var MM = (function(){
     return i === -1;
   }
 
-  /* лічильник у шапці */
+  /* ---------- кошик ----------
+     Це не інтернет-магазин з оплатою: кошик збирає позиції, щоб людина
+     надіслала одну заявку на все одразу, а не заповнювала форму щоразу.
+     Лежить у localStorage цього браузера, ключ mm_cart. */
+  var CART = 'mm_cart';
+  var cartMem = null;
+
+  function cartRead(){
+    if (cartMem) return cartMem.map(function(x){ return {id:x.id, qty:x.qty}; });
+    try {
+      var raw = localStorage.getItem(CART);
+      var list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch(e){ cartMem = cartMem || []; return cartMem.slice(); }
+  }
+  function cartWrite(list){
+    try { localStorage.setItem(CART, JSON.stringify(list)); }
+    catch(e){ cartMem = list.slice(); }
+    badges();
+  }
+  function cartCount(){
+    return cartRead().reduce(function(s, x){ return s + x.qty; }, 0);
+  }
+  function cartHas(id){
+    return cartRead().some(function(x){ return x.id === id; });
+  }
+  function cartAdd(id, qty){
+    var list = cartRead(), row = null;
+    list.forEach(function(x){ if (x.id === id) row = x; });
+    if (row) row.qty = Math.min(99, row.qty + (qty || 1));
+    else list.push({id:id, qty: qty || 1});
+    cartWrite(list);
+    return true;
+  }
+  function cartSetQty(id, qty){
+    var list = cartRead().map(function(x){ return x.id === id ? {id:id, qty:Math.max(0, Math.min(99, qty))} : x; })
+                         .filter(function(x){ return x.qty > 0; });
+    cartWrite(list);
+  }
+  function cartRemove(id){
+    cartWrite(cartRead().filter(function(x){ return x.id !== id; }));
+  }
+  function cartClear(){ cartWrite([]); }
+  /* позиції з підтягнутими даними товару */
+  function cartItems(){
+    return cartRead().map(function(x){ return {p: byId(x.id), qty: x.qty}; })
+                     .filter(function(x){ return x.p; });
+  }
+  function cartTotal(){
+    return cartItems().reduce(function(s, x){ return s + x.p.price * x.qty; }, 0);
+  }
+
+  /* лічильники у шапці */
   function badges(){
     var n = read().length;
     [].forEach.call(document.querySelectorAll('[data-fav-count]'), function(el){
       el.textContent = n;
       el.hidden = (n === 0);
+    });
+    var c = cartCount();
+    [].forEach.call(document.querySelectorAll('[data-cart-count]'), function(el){
+      el.textContent = c;
+      el.hidden = (c === 0);
     });
   }
 
@@ -185,15 +242,33 @@ var MM = (function(){
         '<span class="c-spec">' + p.spec + '</span>' +
         '<div class="c-foot">' +
           '<span class="c-price">' + fmt(p.price) + ' <em>грн</em></span>' +
-          '<a class="c-go" href="model.html?id=' + p.id + '" aria-label="Детальніше"><svg><use href="#i-arrow"/></svg></a>' +
+          '<span class="c-acts">' +
+            '<button class="c-cart' + (cartHas(p.id) ? ' on' : '') + '" type="button" data-cart="' + p.id + '"' +
+              ' title="Додати в кошик" aria-label="Додати в кошик"><svg><use href="#i-cart"/></svg></button>' +
+            '<a class="c-go" href="model.html?id=' + p.id + '" aria-label="Детальніше"><svg><use href="#i-arrow"/></svg></a>' +
+          '</span>' +
         '</div>' +
       '</div>' +
     '</article>';
   }
 
-  /* делеговані кліки по «серцю» */
+  /* делеговані кліки по «серцю» і по кнопці кошика */
   function bindLikes(root){
     (root || document).addEventListener('click', function(e){
+      var cart = e.target.closest ? e.target.closest('[data-cart]') : null;
+      if (cart){
+        e.preventDefault();
+        var cid = cart.getAttribute('data-cart');
+        if (cartHas(cid)) { location.href = 'koshyk.html'; return; }   // вже там — ведемо в кошик
+        cartAdd(cid, 1);
+        cart.classList.add('on');
+        cart.title = 'Уже в кошику — відкрити';
+        if (cart.hasAttribute('data-cart-label')){
+          var was = cart.querySelector('span');
+          if (was) was.textContent = 'У кошику';
+        }
+        return;
+      }
       var b = e.target.closest ? e.target.closest('[data-like]') : null;
       if (!b) return;
       e.preventDefault();
@@ -452,5 +527,7 @@ var MM = (function(){
           byId:byId, catName:catName, card:card, range:range, reveal:reveal,
           likeCount:likeCount, repaintCounts:repaintCounts, loadCounts:loadCounts, shared:shared,
           fold:fold, find:find, topLiked:topLiked, onCounts:onCounts,
-          cc:cc, inStock:inStock};
+          cc:cc, inStock:inStock,
+          cartItems:cartItems, cartTotal:cartTotal, cartCount:cartCount, cartHas:cartHas,
+          cartAdd:cartAdd, cartSetQty:cartSetQty, cartRemove:cartRemove, cartClear:cartClear};
 })();

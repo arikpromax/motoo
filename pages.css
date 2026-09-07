@@ -439,3 +439,90 @@
   .qchip{min-height:44px;padding:11px 14px}
   .sr{padding:18px 0}
 }
+
+/* ============================================================
+   КОШИК
+   Це не онлайн-оплата, а збір позицій в одну заявку.
+   ============================================================ */
+.c-acts{display:flex;align-items:center;gap:8px}
+.c-cart{
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);color:var(--paper-dim);
+  transition:background .2s,color .2s,border-color .2s;
+}
+.c-cart svg{width:16px;height:16px}
+.c-cart:hover{background:var(--sig);border-color:var(--sig);color:#fff}
+.c-cart.on{background:var(--sig);border-color:var(--sig);color:#fff}
+
+.crt-list{border-top:1px solid var(--line);margin:0 var(--pad)}
+.crt-row{
+  display:grid;grid-template-columns:120px minmax(0,1fr) auto auto 44px;
+  align-items:center;gap:clamp(14px,2vw,26px);
+  padding:18px 0;border-bottom:1px solid var(--line);
+}
+.crt-shot{position:relative;display:block;aspect-ratio:4/3;border:1px solid var(--line)}
+.crt-shot .corner{position:absolute;width:8px;height:8px;border:1px solid var(--sig)}
+.crt-shot .c1{left:5px;top:5px;border-right:0;border-bottom:0}
+.crt-shot .c2{right:5px;top:5px;border-left:0;border-bottom:0}
+.crt-shot .c3{left:5px;bottom:5px;border-right:0;border-top:0}
+.crt-shot .c4{right:5px;bottom:5px;border-left:0;border-top:0}
+.crt-info{display:grid;gap:5px;min-width:0}
+.crt-brand{color:var(--paper-dim);font-size:10.5px;letter-spacing:.16em}
+.crt-name{font-family:var(--f-disp);font-weight:900;font-size:clamp(22px,2.2vw,32px);line-height:.94;text-transform:uppercase;transition:color .2s}
+.crt-name:hover{color:var(--sig)}
+.crt-spec{color:var(--paper-dim);font-size:13px}
+.crt-stock{color:var(--paper-dim);font-size:10px;letter-spacing:.14em}
+
+.crt-qty{display:flex;align-items:center;border:1px solid var(--line)}
+.crt-qty button{width:38px;height:42px;color:var(--paper-dim);font-size:17px;line-height:1;transition:background .2s,color .2s}
+.crt-qty button:hover{background:var(--sig);color:#fff}
+.crt-qty input{
+  width:46px;height:42px;text-align:center;background:none;border:0;border-left:1px solid var(--line);
+  border-right:1px solid var(--line);color:var(--paper);outline:none;
+  font-family:var(--f-mono);font-weight:500;font-size:13px;
+}
+.crt-sum{display:grid;justify-items:end;gap:3px;font-family:var(--f-disp);font-weight:800;font-size:24px;white-space:nowrap}
+.crt-sum em{font-style:normal;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--paper-dim)}
+.crt-sum span{font-size:10px;letter-spacing:.1em;color:var(--paper-dim);font-weight:500}
+.crt-del{
+  width:44px;height:44px;justify-self:end;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);color:var(--paper-dim);font-size:14px;transition:background .2s,color .2s,border-color .2s;
+}
+.crt-del:hover{background:var(--sig);border-color:var(--sig);color:#fff}
+
+.crt-foot{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;
+  margin:0 var(--pad);padding:22px 0 0;
+}
+.crt-total{display:grid;gap:6px}
+.crt-total > span:first-child{color:var(--paper-dim);font-size:10.5px;letter-spacing:.2em}
+.crt-total b{font-family:var(--f-disp);font-weight:900;font-size:clamp(34px,4.4vw,60px);line-height:1}
+.crt-total b em{font-style:normal;font-family:var(--f-mono);font-size:13px;letter-spacing:.12em;color:var(--paper-dim)}
+.crt-note{color:var(--paper-dim);font-size:10px;letter-spacing:.12em;max-width:44ch}
+
+.crt-order{
+  display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:clamp(20px,4vw,64px);
+  margin-top:clamp(16px,2.2vw,30px);padding:clamp(22px,2.8vw,34px) var(--pad);border-top:1px solid var(--line);
+}
+.crt-order h2{margin:0;font-family:var(--f-disp);font-weight:900;font-size:clamp(32px,4.4vw,68px);line-height:.86;text-transform:uppercase}
+.crt-order .lead{margin:14px 0 0;max-width:42ch;color:var(--paper-dim);font-size:15px;line-height:1.7}
+
+.crt-empty{margin:0 var(--pad) clamp(60px,9vw,120px);padding:clamp(46px,7vw,96px) 26px;border:1px solid var(--line);text-align:center}
+.crt-empty b{display:block;font-family:var(--f-disp);font-weight:900;font-size:clamp(30px,4vw,54px);text-transform:uppercase;margin-bottom:12px}
+.crt-empty p{margin:0 auto 26px;max-width:46ch;color:var(--paper-dim);font-size:15px;line-height:1.7}
+.crt-empty .ic{width:15px;height:15px;vertical-align:-2px;color:var(--sig)}
+
+@media (max-width:900px){
+  .crt-order{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  /* на вузькому екрані сітка з фіксованими колонками ріже суму —
+     переходимо на гнучкий рядок: фото з описом зверху, кількість і сума знизу */
+  .crt-row{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px 14px;position:relative;padding-right:54px}
+  .crt-shot{flex:0 0 88px}
+  .crt-info{flex:1 1 150px}
+  .crt-qty{order:3}
+  .crt-sum{order:4;margin-left:auto;align-self:center}
+  .crt-del{position:absolute;top:18px;right:0}
+  .crt-foot{align-items:flex-start}
+}
