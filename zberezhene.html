@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Збережене — MOTO MARKET WEST</title>
+<meta name="description" content="Техніка Moto Market West, яку ви позначили серцем.">
+<meta name="theme-color" content="#0A0A0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;600;800;900&family=Geologica:wght@200;300;400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="pages.css">
+</head>
+<body>
+<script src="sprite.js"></script>
+
+<div id="bar-progress"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brandmark" href="index.html" aria-label="Moto Market West">
+    <svg class="glyph"><use href="#i-mark"/></svg>
+    <span class="wm"><b>Moto</b><b>Market</b></span>
+  </a>
+  <nav class="nav">
+    <a href="tehnika.html?cat=moto">Мотоцикли</a>
+    <a href="tehnika.html?cat=atv">Квадроцикли</a>
+    <a href="tehnika.html?cat=gear">Екіпірування</a>
+    <a href="tehnika.html?city=Ковель">Ковель</a>
+    <a href="tehnika.html?city=Шацьк">Шацьк</a>
+    <a href="pro-nas.html">Про нас</a>
+    <a href="kontakty.html">Контакти</a>
+  </nav>
+  <div class="tools">
+    <button class="tool" type="button" data-search-open aria-label="Пошук"><svg><use href="#i-search"/></svg></button>
+    <a class="tool" href="kontakty.html" aria-label="Контакти"><svg><use href="#i-phone"/></svg></a>
+    <a class="tool" href="zberezhene.html" aria-label="Збережене"><svg><use href="#i-heart"/></svg><i class="badge" data-fav-count hidden>0</i></a>
+    <button class="burger" id="burger" aria-label="Меню"><span></span></button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <button class="x" id="sheetClose" aria-label="Закрити">✕</button>
+  <a href="tehnika.html">Техніка</a>
+  <a href="pro-nas.html">Про нас</a>
+  <a href="kontakty.html">Контакти</a>
+  <a href="zberezhene.html">Збережене</a>
+  <a href="index.html#brands">Бренди</a>
+  <a href="index.html#delivery">Доставка</a>
+</div>
+
+<main id="top">
+
+  <div class="crumbs mono">
+    <a href="index.html">Головна</a><span class="sep">/</span><span>Збережене</span>
+  </div>
+
+  <div class="phead">
+    <h1>Збережене</h1>
+    <p>Техніка, яку ви позначили серцем. Список лежить у цьому браузері — можна закрити сторінку й повернутись пізніше. Щоб прибрати позицію, натисніть серце ще раз.</p>
+  </div>
+
+  <div class="fbar" style="grid-template-columns:1fr auto">
+    <div class="fcount"><b id="fCount">0</b> позицій збережено</div>
+    <button class="chip" type="button" id="clearAll" style="border:0;border-left:1px solid var(--line)">Очистити список</button>
+  </div>
+
+  <div class="grid" id="grid" data-saved-view></div>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+
+    <div>
+      <a class="brandmark" href="index.html">
+        <svg class="glyph"><use href="#i-mark"/></svg>
+        <span class="wm"><b>Moto</b><b>Market</b></span>
+      </a>
+      <p class="dim" style="max-width:34ch;font-size:14px;margin:14px 0 0">Мотоцикли, квадроцикли, електротехніка та екіпірування на Волині. Понад 20 років на ринку.</p>
+      <div class="f-ig">
+        <a href="https://www.instagram.com/motomarket_west/" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@motomarket_west</a>
+        <a href="https://www.instagram.com/motomarket_shatsk/" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@motomarket_shatsk</a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Каталог</h4>
+      <ul>
+        <li><a href="tehnika.html">Уся техніка</a></li>
+        <li><a href="tehnika.html?cat=moto">Мотоцикли</a></li>
+        <li><a href="tehnika.html?cat=atv">Квадроцикли</a></li>
+        <li><a href="tehnika.html?cat=electro">Електротехніка</a></li>
+        <li><a href="tehnika.html?cat=helmet">Шоломи</a></li>
+        <li><a href="tehnika.html?cat=gear">Екіпірування</a></li>
+        <li><a href="tehnika.html?cat=parts">Запчастини</a></li>
+        <li><a href="tehnika.html?cat=oil">Мастила й догляд</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Магазини</h4>
+      <div class="f-shop">
+        <b>Ковель</b>
+        <span>вул. Сагайдачного, 4Л</span>
+        <span class="hrs">Пн–Пт 9:00 — 17:00 · Сб–Нд 9:00 — 15:00</span>
+        <a href="https://maps.google.com/?q=Ковель+вулиця+Сагайдачного+4Л" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg>Маршрут</a>
+      </div>
+      <div class="f-shop">
+        <b>Шацьк</b>
+        <span>вул. 50 Років Перемоги, 6</span>
+        <span class="hrs">Пн–Пт 9:00 — 17:00 · Сб–Нд 9:00 — 15:00</span>
+        <a href="https://maps.google.com/?q=Шацьк+вулиця+50+Років+Перемоги+6" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg>Маршрут</a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Контакти</h4>
+      <ul>
+        <li><a href="tel:+380689879872">068 987 98 72 — техніка</a></li>
+        <li><a href="tel:+380688009192">068 800 91 92 — запчастини</a></li>
+      </ul>
+      <ul class="f-sub">
+        <li><a href="pro-nas.html">Про нас</a></li>
+        <li><a href="kontakty.html">Контакти</a></li>
+        <li><a href="zberezhene.html">Збережене</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="f-brands">
+    <span class="k">Бренди</span>
+    <a href="tehnika.html?q=KOVE">Kove</a>
+    <a href="tehnika.html?q=LIFAN">Lifan</a>
+    <a href="tehnika.html?q=SHINERAY">Shineray</a>
+    <a href="tehnika.html?q=KOVI">Kovi</a>
+    <a href="tehnika.html?q=MUSSTANG">Musstang</a>
+    <a href="tehnika.html?q=TEKKEN">Tekken</a>
+    <a href="tehnika.html?q=ODES">Odes</a>
+    <a href="tehnika.html?q=KENNY">Kenny</a>
+    <a href="tehnika.html?q=IPONE">Ipone</a>
+  </div>
+
+  <div class="foot-bot mono">
+    <span>© <span id="yr">2026</span> Moto Market West</span>
+    <a class="f-legal" href="#" data-soon>Політика конфіденційності</a>
+    <span>Ковель · Шацьк · Волинь</span>
+    <button class="to-top" type="button" data-to-top>Нагору<svg><use href="#i-arrow"/></svg></button>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Швидкий звʼязок">
+  <a href="tel:+380689879872" class="hot"><svg><use href="#i-phone"/></svg>Техніка</a>
+  <a href="tel:+380688009192"><svg><use href="#i-gear"/></svg>Запчастини</a>
+</nav>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  var grid = document.getElementById('grid');
+  var count = document.getElementById('fCount');
+
+  function draw(){
+    var ids = MM.saved();
+    var list = PRODUCTS.filter(function(p){ return ids.indexOf(p.id) !== -1; });
+    count.textContent = list.length;
+    grid.innerHTML = list.length
+      ? list.map(MM.card).join('')
+      : '<div class="empty"><b>Поки порожньо</b>Натисніть серце на будь-якій позиції в каталозі — вона зʼявиться тут.<br><br>' +
+        '<a class="btn-sq" href="tehnika.html"><svg><use href="#i-arrow"/></svg>Перейти до техніки</a></div>';
+    MM.reveal();
+  }
+
+  grid.addEventListener('mm:changed', draw);
+  document.getElementById('clearAll').addEventListener('click', function(){
+    MM.saved().forEach(function(id){ MM.toggle(id); });
+    draw();
+  });
+
+  draw();
+})();
+</script>
+</body>
+</html>

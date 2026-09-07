@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Техніка — MOTO MARKET WEST · Ковель · Шацьк</title>
+<meta name="description" content="Каталог мототехніки Moto Market West: мотоцикли, квадроцикли, електротехніка, шоломи, екіпірування, запчастини та мастила. Ковель і Шацьк.">
+<meta name="theme-color" content="#0A0A0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;600;800;900&family=Geologica:wght@200;300;400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="pages.css">
+</head>
+<body>
+<script src="sprite.js"></script>
+
+<div id="bar-progress"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brandmark" href="index.html" aria-label="Moto Market West">
+    <svg class="glyph"><use href="#i-mark"/></svg>
+    <span class="wm"><b>Moto</b><b>Market</b></span>
+  </a>
+  <nav class="nav">
+    <a href="tehnika.html?cat=moto">Мотоцикли</a>
+    <a href="tehnika.html?cat=atv">Квадроцикли</a>
+    <a href="tehnika.html?cat=gear">Екіпірування</a>
+    <a href="tehnika.html?city=Ковель">Ковель</a>
+    <a href="tehnika.html?city=Шацьк">Шацьк</a>
+    <a href="pro-nas.html">Про нас</a>
+    <a href="kontakty.html">Контакти</a>
+  </nav>
+  <div class="tools">
+    <button class="tool" type="button" data-search-open aria-label="Пошук"><svg><use href="#i-search"/></svg></button>
+    <a class="tool" href="kontakty.html" aria-label="Контакти"><svg><use href="#i-phone"/></svg></a>
+    <a class="tool" href="zberezhene.html" aria-label="Збережене"><svg><use href="#i-heart"/></svg><i class="badge" data-fav-count hidden>0</i></a>
+    <button class="burger" id="burger" aria-label="Меню"><span></span></button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <button class="x" id="sheetClose" aria-label="Закрити">✕</button>
+  <a href="tehnika.html">Техніка</a>
+  <a href="pro-nas.html">Про нас</a>
+  <a href="kontakty.html">Контакти</a>
+  <a href="zberezhene.html">Збережене</a>
+  <a href="index.html#brands">Бренди</a>
+  <a href="index.html#delivery">Доставка</a>
+</div>
+
+<main id="top">
+
+  <div class="crumbs mono">
+    <a href="index.html">Головна</a><span class="sep">/</span><span id="crumbNow">Техніка</span>
+  </div>
+
+  <div class="phead">
+    <h1 id="pTitle">Техніка</h1>
+    <p id="pLead">Все, що стоїть у залах Ковеля та Шацька і лежить на складі. Фільтруйте за напрямком, містом і ціною — повзунок рухається від нуля до верхньої межі.</p>
+  </div>
+
+  <p class="demo-note mono"><b>Демонстраційний каталог.</b> Моделі, характеристики та ціни — приклад для макета; замінюємо на ваш прайс.</p>
+
+  <p class="qtag mono" id="qtag" hidden><span>Пошук:</span> <b id="qtagText"></b> <a href="tehnika.html">Скинути ✕</a></p>
+
+  <div class="chips mono" id="chips"></div>
+
+  <div class="fbar">
+    <label class="fld">
+      <svg><use href="#i-pin"/></svg>
+      <select id="fCity" aria-label="Місто">
+        <option>Всі міста</option>
+        <option>Ковель</option>
+        <option>Шацьк</option>
+      </select>
+    </label>
+
+    <div class="fslider" id="fPrice">
+      <span class="k">Ціна</span>
+      <div class="rng">
+        <span class="rng-rail"></span><span class="rng-fill"></span>
+        <input type="range" data-rng="min" min="0" max="700000" step="5000" value="0" aria-label="Ціна від">
+        <input type="range" data-rng="max" min="0" max="700000" step="5000" value="700000" aria-label="Ціна до">
+      </div>
+      <span class="v" data-rng-out>0 — 700 000</span>
+    </div>
+
+    <div class="fcount"><b id="fCount">0</b> позицій</div>
+  </div>
+
+  <div class="grid" id="grid" data-saved-view></div>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+
+    <div>
+      <a class="brandmark" href="index.html">
+        <svg class="glyph"><use href="#i-mark"/></svg>
+        <span class="wm"><b>Moto</b><b>Market</b></span>
+      </a>
+      <p class="dim" style="max-width:34ch;font-size:14px;margin:14px 0 0">Мотоцикли, квадроцикли, електротехніка та екіпірування на Волині. Понад 20 років на ринку.</p>
+      <div class="f-ig">
+        <a href="https://www.instagram.com/motomarket_west/" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@motomarket_west</a>
+        <a href="https://www.instagram.com/motomarket_shatsk/" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@motomarket_shatsk</a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Каталог</h4>
+      <ul>
+        <li><a href="tehnika.html">Уся техніка</a></li>
+        <li><a href="tehnika.html?cat=moto">Мотоцикли</a></li>
+        <li><a href="tehnika.html?cat=atv">Квадроцикли</a></li>
+        <li><a href="tehnika.html?cat=electro">Електротехніка</a></li>
+        <li><a href="tehnika.html?cat=helmet">Шоломи</a></li>
+        <li><a href="tehnika.html?cat=gear">Екіпірування</a></li>
+        <li><a href="tehnika.html?cat=parts">Запчастини</a></li>
+        <li><a href="tehnika.html?cat=oil">Мастила й догляд</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Магазини</h4>
+      <div class="f-shop">
+        <b>Ковель</b>
+        <span>вул. Сагайдачного, 4Л</span>
+        <span class="hrs">Пн–Пт 9:00 — 17:00 · Сб–Нд 9:00 — 15:00</span>
+        <a href="https://maps.google.com/?q=Ковель+вулиця+Сагайдачного+4Л" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg>Маршрут</a>
+      </div>
+      <div class="f-shop">
+        <b>Шацьк</b>
+        <span>вул. 50 Років Перемоги, 6</span>
+        <span class="hrs">Пн–Пт 9:00 — 17:00 · Сб–Нд 9:00 — 15:00</span>
+        <a href="https://maps.google.com/?q=Шацьк+вулиця+50+Років+Перемоги+6" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg>Маршрут</a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Контакти</h4>
+      <ul>
+        <li><a href="tel:+380689879872">068 987 98 72 — техніка</a></li>
+        <li><a href="tel:+380688009192">068 800 91 92 — запчастини</a></li>
+      </ul>
+      <ul class="f-sub">
+        <li><a href="pro-nas.html">Про нас</a></li>
+        <li><a href="kontakty.html">Контакти</a></li>
+        <li><a href="zberezhene.html">Збережене</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="f-brands">
+    <span class="k">Бренди</span>
+    <a href="tehnika.html?q=KOVE">Kove</a>
+    <a href="tehnika.html?q=LIFAN">Lifan</a>
+    <a href="tehnika.html?q=SHINERAY">Shineray</a>
+    <a href="tehnika.html?q=KOVI">Kovi</a>
+    <a href="tehnika.html?q=MUSSTANG">Musstang</a>
+    <a href="tehnika.html?q=TEKKEN">Tekken</a>
+    <a href="tehnika.html?q=ODES">Odes</a>
+    <a href="tehnika.html?q=KENNY">Kenny</a>
+    <a href="tehnika.html?q=IPONE">Ipone</a>
+  </div>
+
+  <div class="foot-bot mono">
+    <span>© <span id="yr">2026</span> Moto Market West</span>
+    <a class="f-legal" href="#" data-soon>Політика конфіденційності</a>
+    <span>Ковель · Шацьк · Волинь</span>
+    <button class="to-top" type="button" data-to-top>Нагору<svg><use href="#i-arrow"/></svg></button>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Швидкий звʼязок">
+  <a href="tel:+380689879872" class="hot"><svg><use href="#i-phone"/></svg>Техніка</a>
+  <a href="tel:+380688009192"><svg><use href="#i-gear"/></svg>Запчастини</a>
+</nav>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  var MAXP = 700000;
+  var qs = new URLSearchParams(location.search);
+  var state = {
+    cat:  qs.get('cat') || 'all',
+    city: qs.get('city') || 'Всі міста',
+    min:  +(qs.get('min') || 0),
+    max:  +(qs.get('max') || MAXP),
+    q:    (qs.get('q') || '').trim()
+  };
+
+  var grid = document.getElementById('grid');
+  var chips = document.getElementById('chips');
+  var city = document.getElementById('fCity');
+  var count = document.getElementById('fCount');
+
+  /* чипи напрямків */
+  function drawChips(){
+    chips.innerHTML = CATS.map(function(c){
+      return '<button class="chip' + (state.cat === c.id ? ' on' : '') +
+             '" type="button" data-cat="' + c.id + '">' + c.name + '</button>';
+    }).join('');
+  }
+
+  var found = null;   // результати пошуку, якщо прийшли з ?q=
+  function match(p){
+    if (found && found.indexOf(p) === -1) return false;
+    if (state.cat !== 'all' && p.cat !== state.cat) return false;
+    if (state.city !== 'Всі міста' && p.city !== state.city) return false;
+    if (p.price < state.min || p.price > state.max) return false;
+    return true;
+  }
+
+  function draw(){
+    var list = PRODUCTS.filter(match);
+    count.textContent = list.length;
+    if (!list.length){
+      grid.innerHTML = '<div class="empty"><b>Нічого не знайшли</b>' +
+        'Спробуйте ширший діапазон ціни або інший напрямок — або наберіть нам, підберемо вручну.</div>';
+    } else {
+      grid.innerHTML = list.map(MM.card).join('');
+    }
+    MM.reveal();
+
+    document.getElementById('pTitle').textContent = state.cat === 'all' ? 'Техніка' : MM.catName(state.cat);
+    document.getElementById('crumbNow').textContent = document.getElementById('pTitle').textContent;
+
+    var url = [];
+    if (state.q) url.push('q=' + encodeURIComponent(state.q));
+    if (state.cat !== 'all') url.push('cat=' + state.cat);
+    if (state.city !== 'Всі міста') url.push('city=' + encodeURIComponent(state.city));
+    if (state.min > 0) url.push('min=' + state.min);
+    if (state.max < MAXP) url.push('max=' + state.max);
+    history.replaceState(null, '', location.pathname + (url.length ? '?' + url.join('&') : ''));
+  }
+
+  chips.addEventListener('click', function(e){
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    state.cat = b.getAttribute('data-cat');
+    drawChips(); draw();
+  });
+
+  city.value = state.city;
+  city.addEventListener('change', function(){ state.city = city.value; draw(); });
+
+  var price = MM.range(document.getElementById('fPrice'), function(a, b){
+    state.min = a; state.max = b;
+    if (grid.innerHTML) draw();
+  });
+  price.set(state.min, state.max);
+
+  if (state.q){
+    found = MM.find(state.q);
+    document.getElementById('qtagText').textContent = '«' + state.q + '»';
+    document.getElementById('qtag').hidden = false;
+  }
+
+  drawChips();
+  draw();
+})();
+</script>
+</body>
+</html>
