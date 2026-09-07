@@ -21,8 +21,7 @@
 <!-- ========================= ШАПКА ============================ -->
 <header class="topbar" id="topbar">
   <a class="brandmark" href="#top" aria-label="Moto Market West">
-    <svg class="glyph"><use href="#i-mark"/></svg>
-    <span class="wm"><b>Moto</b><b>Market</b></span>
+    <img src="logo.png" alt="Мото Маркет" width="600" height="172">
   </a>
   <nav class="nav">
     <a href="tehnika.html?cat=moto">Мотоцикли</a>
@@ -99,7 +98,12 @@
             <input type="range" data-rng="min" min="0" max="700000" step="5000" value="0" aria-label="Ціна від">
             <input type="range" data-rng="max" min="0" max="700000" step="5000" value="700000" aria-label="Ціна до">
           </div>
-          <div class="pop-ends mono"><span>0</span><span>700 000+</span></div>
+          <div class="pop-nums">
+            <input type="text" inputmode="numeric" data-num="min" placeholder="від" aria-label="Ціна від">
+            <span class="dash">—</span>
+            <input type="text" inputmode="numeric" data-num="max" placeholder="до" aria-label="Ціна до">
+            <span class="cur mono">грн</span>
+          </div>
         </div>
       </div>
       <button class="find" type="submit"><svg><use href="#i-search"/></svg>Знайти</button>
@@ -186,17 +190,10 @@
     <p class="sec-lead rv">Працюємо напряму з виробниками й офіційними імпортерами. Це означає гарантію, доступ до каталогу запчастин і адекватні терміни, а не «привезем колись».</p>
   </div>
 
-  <div class="brands">
-    <a class="brand rv" href="#contacts"><span class="b-n">01 · Техніка</span><span class="b-w">Kove</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">02 · Техніка</span><span class="b-w">Lifan</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">03 · Техніка</span><span class="b-w">Shineray</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">04 · Техніка</span><span class="b-w">Kovi</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">05 · Техніка</span><span class="b-w">Musstang</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">06 · Техніка</span><span class="b-w">Tekken</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">07 · Техніка</span><span class="b-w">Odes</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">08 · Екіп</span><span class="b-w">Kenny</span></a>
-    <a class="brand rv" href="#contacts"><span class="b-n">09 · Хімія</span><span class="b-w">Ipone</span></a>
-    <a class="brand muted rv" href="#contacts"><span class="b-n">10 · Запит</span><span class="b-w">Та інші</span></a>
+
+  <!-- стрічка логотипів під сіткою: наповнюється з BRAND_LOGOS унизу сторінки -->
+  <div class="bmarq" id="brandMarq" aria-label="Бренди, з якими працюємо">
+    <div class="bmarq-track" id="brandTrack"></div>
   </div>
 </section>
 
@@ -373,9 +370,8 @@
 
     <div>
       <a class="brandmark" href="index.html">
-        <svg class="glyph"><use href="#i-mark"/></svg>
-        <span class="wm"><b>Moto</b><b>Market</b></span>
-      </a>
+    <img src="logo.png" alt="Мото Маркет" width="600" height="172">
+  </a>
       <p class="dim" style="max-width:34ch;font-size:14px;margin:14px 0 0">Мотоцикли, квадроцикли, електротехніка та екіпірування на Волині. Понад 20 років на ринку.</p>
       <div class="f-ig">
         <a href="https://www.instagram.com/motomarket_west/" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@motomarket_west</a>
@@ -436,7 +432,7 @@
     <a href="tehnika.html?q=KOVI">Kovi</a>
     <a href="tehnika.html?q=MUSSTANG">Musstang</a>
     <a href="tehnika.html?q=TEKKEN">Tekken</a>
-    <a href="tehnika.html?q=ODES">Odes</a>
+    <a href="tehnika.html?q=AODES">Aodes</a>
     <a href="tehnika.html?q=KENNY">Kenny</a>
     <a href="tehnika.html?q=IPONE">Ipone</a>
   </div>
@@ -444,7 +440,7 @@
   <div class="foot-bot mono">
     <span>© <span id="yr">2026</span> Moto Market West</span>
     <a class="f-legal" href="#" data-soon>Політика конфіденційності</a>
-    <span>Ковель · Шацьк · Волинь</span>
+    <span>Ковель · Шацьк</span>
     <button class="to-top" type="button" data-to-top>Нагору<svg><use href="#i-arrow"/></svg></button>
   </div>
 </footer>
@@ -512,6 +508,47 @@
 
   build();
   MM.onCounts(build);   // прийшли справжні лічильники з сервера — перебудувати
+
+  /* ------------------------------------------------------------------
+     Стрічка логотипів брендів. Поки файлу немає — у стрічці їде назва,
+     щойн файл зʼявиться в теці brands/ — сама підставиться картинка.
+     ------------------------------------------------------------------ */
+  var BRAND_LOGOS = [
+    {n:'KOVE',     f:'brands/kove.png'},
+    {n:'LIFAN',    f:'brands/lifan.png'},
+    {n:'SHINERAY', f:'brands/shineray.png'},
+    {n:'KOVI',     f:'brands/kovi.png'},
+    {n:'MUSSTANG', f:'brands/musstang.png'},
+    {n:'TEKKEN',   f:'brands/tekken.png'},
+    {n:'AODES',    f:'brands/aodes.png'},
+    {n:'KENNY',    f:'brands/kenny.png'},
+    {n:'IPONE',    f:'brands/ipone.png'}
+  ];
+
+  var track = document.getElementById('brandTrack');
+  function brandMark(b, dup){
+    var a = document.createElement('a');
+    a.className = 'bmark';
+    a.href = 'tehnika.html?q=' + encodeURIComponent(b.n);
+    a.title = b.n;
+    if (dup){ a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
+    var img = document.createElement('img');
+    img.alt = b.n;
+    /* без lazy: інакше браузер не пробує вантажити те, що поза екраном,
+       і замість назви лишається порожнє місце */
+    img.onerror = function(){                       // файлу ще немає — лишаємо назву
+      var s = document.createElement('span');
+      s.textContent = b.n;
+      a.replaceChild(s, img);
+    };
+    img.src = b.f;
+    a.appendChild(img);
+    return a;
+  }
+  /* друга копія — щоб стрічка зациклювалась без стрибка */
+  [0, 1].forEach(function(pass){
+    BRAND_LOGOS.forEach(function(b){ track.appendChild(brandMark(b, pass === 1)); });
+  });
 
   /* --- ціна: повзунок «від — до» у випадному блоці --- */
   var fld = document.getElementById('priceFld');

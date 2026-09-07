@@ -136,6 +136,29 @@ var MM = (function(){
       .catch(function(){});
   }
 
+  /* ---------- дані, витягнуті з характеристик ---------- */
+
+  /* обʼєм двигуна в см³; у характеристиках це єдине значення,
+     що починається з числа й «см³», тож шукаємо саме за формою */
+  function cc(p){
+    var found = null;
+    (p.specs || []).forEach(function(g){
+      g[1].forEach(function(r){
+        if (found) return;
+        var m = String(r[1]).match(/^(\d+)\s*см³/);
+        if (m) found = +m[1];
+      });
+    });
+    return found;
+  }
+
+  /* чи є позиція в залі; якщо вибрано місто — дивимось саме його */
+  function inStock(p, city){
+    if (city === 'Ковель') return p.kovel === 'Є';
+    if (city === 'Шацьк')  return p.shatsk === 'Є';
+    return p.kovel === 'Є' || p.shatsk === 'Є';
+  }
+
   function byId(id){
     for (var i=0;i<PRODUCTS.length;i++) if (PRODUCTS[i].id === id) return PRODUCTS[i];
     return null;
@@ -185,24 +208,54 @@ var MM = (function(){
     });
   }
 
-  /* повзунок «від — до» з двох range-інпутів */
+  /* повзунок «від — до»: два range-інпути плюс, якщо є в розмітці,
+     два поля для набору ціни руками — працюють в обидва боки */
   function range(box, onChange){
     var lo = box.querySelector('[data-rng="min"]');
     var hi = box.querySelector('[data-rng="max"]');
     var fill = box.querySelector('.rng-fill');
     var out = box.querySelector('[data-rng-out]');
-    var max = +lo.max;
+    var numLo = box.querySelector('[data-num="min"]');
+    var numHi = box.querySelector('[data-num="max"]');
+    var max = +lo.max, step = +lo.step;
 
     function paint(){
       var a = +lo.value, b = +hi.value;
-      if (a > b - +lo.step){ if (document.activeElement === lo) lo.value = a = b - +lo.step; else hi.value = b = a + +lo.step; }
+      if (a > b - step){ if (document.activeElement === lo) lo.value = a = b - step; else hi.value = b = a + step; }
       fill.style.left  = (a / max * 100) + '%';
       fill.style.right = (100 - b / max * 100) + '%';
       if (out) out.textContent = fmt(a) + ' — ' + fmt(b) + (b >= max ? '+' : '') + ' грн';
+      /* поля не перебиваємо, поки в них друкують */
+      if (numLo && document.activeElement !== numLo) numLo.value = a > 0 ? fmt(a) : '';
+      if (numHi && document.activeElement !== numHi) numHi.value = b < max ? fmt(b) : '';
       if (onChange) onChange(a, b);
     }
+
+    /* з полів у повзунок: беремо лише цифри, доводимо до кроку й міняємо місцями,
+       якщо «від» більше за «до» */
+    function fromFields(){
+      var digits = function(el, def){
+        var n = parseInt(String(el.value).replace(/[^\d]/g, ''), 10);
+        return isNaN(n) ? def : Math.max(0, Math.min(n, max));
+      };
+      var a = digits(numLo, 0), b = digits(numHi, max);
+      if (a > b){ var t = a; a = b; b = t; }
+      lo.value = Math.round(a / step) * step;
+      hi.value = Math.round(b / step) * step;
+      paint();
+    }
+
     lo.addEventListener('input', paint);
     hi.addEventListener('input', paint);
+    [numLo, numHi].forEach(function(el){
+      if (!el) return;
+      el.addEventListener('change', fromFields);
+      el.addEventListener('blur', fromFields);
+      el.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); el.blur(); } });
+      /* всередині поля ціни клік не має закривати випадний блок */
+      el.addEventListener('click', function(e){ e.stopPropagation(); });
+    });
+
     paint();
     return {paint:paint, min:function(){return +lo.value}, max:function(){return +hi.value},
             set:function(a,b){ lo.value = a; hi.value = b; paint(); }};
@@ -213,7 +266,9 @@ var MM = (function(){
      KOVE, а «shleom» — ні. Шукаємо по назві, бренду, характеристиці,
      тегах, напрямку й місту. */
   var CYR = {
-    'а':'a','б':'b','в':'v','г':'h','ґ':'g','д':'d','е':'e','є':'ye','ж':'zh','з':'z',
+    /* «г» зводимо до g, а не h: латинські назви брендів пишуть саме через g
+       (мустанг → mustang), і кирилична вимова має на них попадати */
+    'а':'a','б':'b','в':'v','г':'g','ґ':'g','д':'d','е':'e','є':'ye','ж':'zh','з':'z',
     'и':'y','і':'i','ї':'yi','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p',
     'р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch',
     'ь':'','ю':'yu','я':'ya','ы':'y','э':'e','ъ':'','ё':'e'
@@ -225,7 +280,9 @@ var MM = (function(){
       var c = s.charAt(i);
       out += (CYR[c] !== undefined ? CYR[c] : c);
     }
-    return out;
+    /* здвоєні літери схлопуємо: MUSSTANG і «мустанг» мають зійтись,
+       і заразом прощаються дрібні одруки */
+    return out.replace(/(.)\1+/g, '$1');
   }
   function hay(p){
     return fold([p.brand, p.name, p.spec, (p.tags || []).join(' '), catName(p.cat), p.city].join(' '));
@@ -394,5 +451,6 @@ var MM = (function(){
   return {saved:saved, isSaved:isSaved, toggle:toggle, badges:badges, fmt:fmt,
           byId:byId, catName:catName, card:card, range:range, reveal:reveal,
           likeCount:likeCount, repaintCounts:repaintCounts, loadCounts:loadCounts, shared:shared,
-          fold:fold, find:find, topLiked:topLiked, onCounts:onCounts};
+          fold:fold, find:find, topLiked:topLiked, onCounts:onCounts,
+          cc:cc, inStock:inStock};
 })();

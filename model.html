@@ -19,8 +19,7 @@
 
 <header class="topbar" id="topbar">
   <a class="brandmark" href="index.html" aria-label="Moto Market West">
-    <svg class="glyph"><use href="#i-mark"/></svg>
-    <span class="wm"><b>Moto</b><b>Market</b></span>
+    <img src="logo.png" alt="Мото Маркет" width="600" height="172">
   </a>
   <nav class="nav">
     <a href="tehnika.html?cat=moto">Мотоцикли</a>
@@ -79,9 +78,8 @@
 
     <div>
       <a class="brandmark" href="index.html">
-        <svg class="glyph"><use href="#i-mark"/></svg>
-        <span class="wm"><b>Moto</b><b>Market</b></span>
-      </a>
+    <img src="logo.png" alt="Мото Маркет" width="600" height="172">
+  </a>
       <p class="dim" style="max-width:34ch;font-size:14px;margin:14px 0 0">Мотоцикли, квадроцикли, електротехніка та екіпірування на Волині. Понад 20 років на ринку.</p>
       <div class="f-ig">
         <a href="https://www.instagram.com/motomarket_west/" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@motomarket_west</a>
@@ -142,7 +140,7 @@
     <a href="tehnika.html?q=KOVI">Kovi</a>
     <a href="tehnika.html?q=MUSSTANG">Musstang</a>
     <a href="tehnika.html?q=TEKKEN">Tekken</a>
-    <a href="tehnika.html?q=ODES">Odes</a>
+    <a href="tehnika.html?q=AODES">Aodes</a>
     <a href="tehnika.html?q=KENNY">Kenny</a>
     <a href="tehnika.html?q=IPONE">Ipone</a>
   </div>
@@ -150,7 +148,7 @@
   <div class="foot-bot mono">
     <span>© <span id="yr">2026</span> Moto Market West</span>
     <a class="f-legal" href="#" data-soon>Політика конфіденційності</a>
-    <span>Ковель · Шацьк · Волинь</span>
+    <span>Ковель · Шацьк</span>
     <button class="to-top" type="button" data-to-top>Нагору<svg><use href="#i-arrow"/></svg></button>
   </div>
 </footer>
@@ -235,7 +233,10 @@
         '<a class="btn-sq" href="tel:+380689879872"><svg><use href="#i-phone"/></svg>Подзвонити</a>' +
         '<button class="btn-like' + (MM.isSaved(p.id) ? ' on' : '') + '" type="button" data-like="' + p.id + '">' +
           '<svg><use href="#i-heart"/></svg>Подобається <b data-like-n="' + p.id + '">' + MM.likeCount(p) + '</b></button>' +
-        '<button class="btn-sq" type="button" id="btnShare"><svg><use href="#i-share"/></svg>Поділитись</button>' +
+        '<span class="share-wrap">' +
+          '<button class="btn-sq" type="button" id="btnShare"><svg><use href="#i-share"/></svg>Поділитись</button>' +
+          '<div class="share-pop" id="sharePop" hidden></div>' +
+        '</span>' +
       '</div>' +
       '<p class="p-desc">' + p.desc + '</p>' +
     '</div>';
@@ -256,11 +257,19 @@
     '<p>Ціна вказана за базову комплектацію. <b>Наявність у Ковелі та Шацьку ми проставляємо вручну</b> — у блоці вище стоїть те, що реально є в залі на сьогодні, а не автоматичний статус з чужої бази.</p>' +
     '<p>Понад 20 років ми возимо мототехніку на Волинь самі, без посередників. По цій позиції є доступ не лише до самого апарата, а й до каталогу запчастин: ходові витратники лежать на складі, решту замовляємо. Вагаєтесь між двома моделями — наберіть, за дві хвилини пояснимо різницю без «беріть найдорожче».</p>';
 
-  var specsTable = '<table class="spec">' +
-    p.specs.map(function(r){ return '<tr><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('') +
-    '<tr><th>Код товару</th><td>' + code + '</td></tr>' +
-    '<tr><th>Категорія</th><td>' + MM.catName(p.cat) + '</td></tr>' +
-    '</table>';
+  /* характеристики йдуть групами: Двигун, Трансмісія, Ходова… */
+  var groups = p.specs.concat([['Каталог', [
+    ['Код товару', code],
+    ['Категорія', MM.catName(p.cat)],
+    ['Наявність', 'Ковель — ' + p.kovel + ' · Шацьк — ' + p.shatsk]
+  ]]]);
+  var specsTable = groups.map(function(g){
+    return '<div class="spec-group">' +
+      '<h3 class="mono">' + g[0] + '</h3>' +
+      '<table class="spec">' +
+        g[1].map(function(r){ return '<tr><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('') +
+      '</table></div>';
+  }).join('');
 
   var deliv = '<div class="infogrid">' +
     info('i-truck', 'Волинь — самі', 'Ковель, Луцьк, Ратне, Камінь-Каширський, Володимир, Нововолинськ, Любомль і села між ними — власним транспортом.') +
@@ -307,17 +316,79 @@
     document.getElementById('modalOk').hidden = false;
   });
 
-  /* ---- поділитись ---- */
-  document.getElementById('btnShare').addEventListener('click', function(){
-    var btn = this, data = {title: p.brand + ' ' + p.name, url: location.href};
-    if (navigator.share) { navigator.share(data).catch(function(){}); return; }
-    var done = function(){
-      var old = btn.lastChild.textContent;
-      btn.lastChild.textContent = 'Скопійовано';
-      setTimeout(function(){ btn.lastChild.textContent = old; }, 1600);
-    };
-    if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, function(){});
+  /* ---- поділитись ----
+     Власне меню просто під кнопкою: позицію системного вікна задає ОС,
+     її не змінити, тому робимо своє. Передаємо ТІЛЬКИ посилання, без
+     заголовків і цін — щоб у месенджер лягав чистий лінк. */
+  var shareBtn = document.getElementById('btnShare');
+  var sharePop = document.getElementById('sharePop');
+  var label = shareBtn.lastChild;
+  var URL_ = location.href;
+  var E = encodeURIComponent(URL_);
+
+  var rows = [
+    ['copy', 'Копіювати посилання', ''],
+    ['tg',   'Telegram',  'https://t.me/share/url?url=' + E],
+    ['vb',   'Viber',     'viber://forward?text=' + E],
+    ['wa',   'WhatsApp',  'https://wa.me/?text=' + E],
+    ['fb',   'Facebook',  'https://www.facebook.com/sharer/sharer.php?u=' + E]
+  ];
+  sharePop.innerHTML = rows.map(function(r){
+    return r[2]
+      ? '<a class="share-row mono" href="' + r[2] + '" target="_blank" rel="noopener">' + r[1] + '</a>'
+      : '<button class="share-row mono" type="button" data-copy>' + r[1] + '</button>';
+  }).join('') + (navigator.share
+      ? '<button class="share-row mono" type="button" data-native>Інші застосунки…</button>' : '');
+
+  function flash(msg){
+    var old = label.textContent;
+    label.textContent = msg;
+    shareBtn.classList.add('solid');
+    setTimeout(function(){ label.textContent = old; shareBtn.classList.remove('solid'); }, 1800);
+  }
+  function closePop(){ sharePop.hidden = true; shareBtn.setAttribute('aria-expanded', 'false'); }
+
+  /* тримаємо меню в межах екрана, звідки б його не відкрили */
+  function place(){
+    var pad = 12;
+    sharePop.style.left = '0px';
+    var r = sharePop.getBoundingClientRect();
+    var over = r.right - (window.innerWidth - pad);
+    if (over > 0) sharePop.style.left = (-over) + 'px';
+    var r2 = sharePop.getBoundingClientRect();
+    if (r2.left < pad) sharePop.style.left = (parseFloat(sharePop.style.left || 0) + (pad - r2.left)) + 'px';
+  }
+
+  shareBtn.setAttribute('aria-expanded', 'false');
+  shareBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    sharePop.hidden = !sharePop.hidden;
+    if (!sharePop.hidden) place();
+    shareBtn.setAttribute('aria-expanded', String(!sharePop.hidden));
   });
+  window.addEventListener('resize', function(){ if (!sharePop.hidden) place(); });
+
+  sharePop.addEventListener('click', function(e){
+    var el = e.target.closest('.share-row');
+    if (!el) return;
+    if (el.hasAttribute('data-copy')){
+      e.preventDefault();
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(URL_).then(
+          function(){ flash('Посилання скопійовано'); },
+          function(){ flash('Скопіюйте з адресного рядка'); });
+      } else { flash('Скопіюйте з адресного рядка'); }
+    } else if (el.hasAttribute('data-native')){
+      e.preventDefault();
+      navigator.share({url: URL_}).catch(function(){});
+    }
+    closePop();
+  });
+
+  document.addEventListener('click', function(e){
+    if (!sharePop.hidden && !e.target.closest('.share-wrap')) closePop();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closePop(); });
 
   MM.reveal();
 })();

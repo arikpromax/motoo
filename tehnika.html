@@ -19,8 +19,7 @@
 
 <header class="topbar" id="topbar">
   <a class="brandmark" href="index.html" aria-label="Moto Market West">
-    <svg class="glyph"><use href="#i-mark"/></svg>
-    <span class="wm"><b>Moto</b><b>Market</b></span>
+    <img src="logo.png" alt="Мото Маркет" width="600" height="172">
   </a>
   <nav class="nav">
     <a href="tehnika.html?cat=moto">Мотоцикли</a>
@@ -57,12 +56,14 @@
 
   <div class="phead">
     <h1 id="pTitle">Техніка</h1>
-    <p id="pLead">Все, що стоїть у залах Ковеля та Шацька і лежить на складі. Фільтруйте за напрямком, містом і ціною — повзунок рухається від нуля до верхньої межі.</p>
   </div>
 
   <p class="demo-note mono"><b>Демонстраційний каталог.</b> Моделі, характеристики та ціни — приклад для макета; замінюємо на ваш прайс.</p>
 
-  <p class="qtag mono" id="qtag" hidden><span>Пошук:</span> <b id="qtagText"></b> <a href="tehnika.html">Скинути ✕</a></p>
+  <div class="qtag" id="qtag" hidden>
+    <span class="k" id="qtagText"></span>
+    <button class="qchip" type="button" id="qReset">Скинути<span class="x">✕</span></button>
+  </div>
 
   <div class="chips mono" id="chips"></div>
 
@@ -76,6 +77,24 @@
       </select>
     </label>
 
+    <label class="fld" id="fCcWrap">
+      <svg><use href="#i-gear"/></svg>
+      <select id="fCc" aria-label="Обʼєм двигуна">
+        <option value="any">Будь-який обʼєм</option>
+        <option value="to200">до 200 см³</option>
+        <option value="200-300">200 — 300 см³</option>
+        <option value="from300">понад 300 см³</option>
+      </select>
+    </label>
+
+    <label class="fld">
+      <svg><use href="#i-shield"/></svg>
+      <select id="fStock" aria-label="Наявність">
+        <option value="any">Будь-яка наявність</option>
+        <option value="now">Тільки в наявності</option>
+      </select>
+    </label>
+
     <div class="fslider" id="fPrice">
       <span class="k">Ціна</span>
       <div class="rng">
@@ -83,7 +102,12 @@
         <input type="range" data-rng="min" min="0" max="700000" step="5000" value="0" aria-label="Ціна від">
         <input type="range" data-rng="max" min="0" max="700000" step="5000" value="700000" aria-label="Ціна до">
       </div>
-      <span class="v" data-rng-out>0 — 700 000</span>
+      <div class="pop-nums">
+        <input type="text" inputmode="numeric" data-num="min" placeholder="від" aria-label="Ціна від">
+        <span class="dash">—</span>
+        <input type="text" inputmode="numeric" data-num="max" placeholder="до" aria-label="Ціна до">
+        <span class="cur mono">грн</span>
+      </div>
     </div>
 
     <div class="fcount"><b id="fCount">0</b> позицій</div>
@@ -98,9 +122,8 @@
 
     <div>
       <a class="brandmark" href="index.html">
-        <svg class="glyph"><use href="#i-mark"/></svg>
-        <span class="wm"><b>Moto</b><b>Market</b></span>
-      </a>
+    <img src="logo.png" alt="Мото Маркет" width="600" height="172">
+  </a>
       <p class="dim" style="max-width:34ch;font-size:14px;margin:14px 0 0">Мотоцикли, квадроцикли, електротехніка та екіпірування на Волині. Понад 20 років на ринку.</p>
       <div class="f-ig">
         <a href="https://www.instagram.com/motomarket_west/" target="_blank" rel="noopener"><svg><use href="#i-ig"/></svg>@motomarket_west</a>
@@ -161,7 +184,7 @@
     <a href="tehnika.html?q=KOVI">Kovi</a>
     <a href="tehnika.html?q=MUSSTANG">Musstang</a>
     <a href="tehnika.html?q=TEKKEN">Tekken</a>
-    <a href="tehnika.html?q=ODES">Odes</a>
+    <a href="tehnika.html?q=AODES">Aodes</a>
     <a href="tehnika.html?q=KENNY">Kenny</a>
     <a href="tehnika.html?q=IPONE">Ipone</a>
   </div>
@@ -169,7 +192,7 @@
   <div class="foot-bot mono">
     <span>© <span id="yr">2026</span> Moto Market West</span>
     <a class="f-legal" href="#" data-soon>Політика конфіденційності</a>
-    <span>Ковель · Шацьк · Волинь</span>
+    <span>Ковель · Шацьк</span>
     <button class="to-top" type="button" data-to-top>Нагору<svg><use href="#i-arrow"/></svg></button>
   </div>
 </footer>
@@ -190,7 +213,9 @@
     city: qs.get('city') || 'Всі міста',
     min:  +(qs.get('min') || 0),
     max:  +(qs.get('max') || MAXP),
-    q:    (qs.get('q') || '').trim()
+    q:    (qs.get('q') || '').trim(),
+    cc:    qs.get('cc') || 'any',
+    stock: qs.get('stock') || 'any'
   };
 
   var grid = document.getElementById('grid');
@@ -204,6 +229,16 @@
       return '<button class="chip' + (state.cat === c.id ? ' on' : '') +
              '" type="button" data-cat="' + c.id + '">' + c.name + '</button>';
     }).join('');
+    centerChip();
+  }
+
+  /* на телефоні стрічка гортається — тримаємо вибрану категорію по центру */
+  function centerChip(){
+    var on = chips.querySelector('.chip.on');
+    if (!on || chips.scrollWidth <= chips.clientWidth) return;
+    var max = chips.scrollWidth - chips.clientWidth;
+    var want = on.offsetLeft - (chips.clientWidth - on.offsetWidth) / 2;
+    chips.scrollLeft = Math.max(0, Math.min(want, max));
   }
 
   var found = null;   // результати пошуку, якщо прийшли з ?q=
@@ -212,6 +247,14 @@
     if (state.cat !== 'all' && p.cat !== state.cat) return false;
     if (state.city !== 'Всі міста' && p.city !== state.city) return false;
     if (p.price < state.min || p.price > state.max) return false;
+    if (state.stock === 'now' && !MM.inStock(p, state.city)) return false;
+    if (state.cc !== 'any'){
+      var v = MM.cc(p);
+      if (v === null) return false;                       // без двигуна — не підходить під фільтр обʼєму
+      if (state.cc === 'to200'    && v >= 200) return false;
+      if (state.cc === '200-300'  && (v < 200 || v > 300)) return false;
+      if (state.cc === 'from300'  && v <= 300) return false;
+    }
     return true;
   }
 
@@ -229,12 +272,26 @@
     document.getElementById('pTitle').textContent = state.cat === 'all' ? 'Техніка' : MM.catName(state.cat);
     document.getElementById('crumbNow').textContent = document.getElementById('pTitle').textContent;
 
+    /* «Скинути» показуємо лише тоді, коли щось справді вибрано */
+    var picked = !!state.q || state.cat !== 'all' || state.city !== 'Всі міста'
+                 || state.min > 0 || state.max < MAXP
+                 || state.cc !== 'any' || state.stock !== 'any';
+
+    /* обʼєм двигуна питати лише там, де він буває */
+    var hasEngine = ['all', 'moto', 'atv'].indexOf(state.cat) !== -1;
+    document.getElementById('fCcWrap').hidden = !hasEngine;
+    if (!hasEngine && state.cc !== 'any'){ state.cc = 'any'; ccSel.value = 'any'; }
+    document.getElementById('qtag').hidden = !picked;
+    document.getElementById('qtagText').textContent = state.q ? 'Пошук: «' + state.q + '»' : '';
+
     var url = [];
     if (state.q) url.push('q=' + encodeURIComponent(state.q));
     if (state.cat !== 'all') url.push('cat=' + state.cat);
     if (state.city !== 'Всі міста') url.push('city=' + encodeURIComponent(state.city));
     if (state.min > 0) url.push('min=' + state.min);
     if (state.max < MAXP) url.push('max=' + state.max);
+    if (state.cc !== 'any') url.push('cc=' + state.cc);
+    if (state.stock !== 'any') url.push('stock=' + state.stock);
     history.replaceState(null, '', location.pathname + (url.length ? '?' + url.join('&') : ''));
   }
 
@@ -245,8 +302,15 @@
     drawChips(); draw();
   });
 
+  var ccSel = document.getElementById('fCc');
+  var stockSel = document.getElementById('fStock');
+
   city.value = state.city;
   city.addEventListener('change', function(){ state.city = city.value; draw(); });
+  ccSel.value = state.cc;
+  ccSel.addEventListener('change', function(){ state.cc = ccSel.value; draw(); });
+  stockSel.value = state.stock;
+  stockSel.addEventListener('change', function(){ state.stock = stockSel.value; draw(); });
 
   var price = MM.range(document.getElementById('fPrice'), function(a, b){
     state.min = a; state.max = b;
@@ -254,14 +318,27 @@
   });
   price.set(state.min, state.max);
 
-  if (state.q){
-    found = MM.find(state.q);
-    document.getElementById('qtagText').textContent = '«' + state.q + '»';
-    document.getElementById('qtag').hidden = false;
-  }
+  if (state.q) found = MM.find(state.q);
+
+  /* скидає геть усе: пошук, напрямок, місто й ціну */
+  document.getElementById('qReset').addEventListener('click', function(){
+    state.q = ''; found = null;
+    state.cat = 'all';
+    state.city = 'Всі міста'; city.value = 'Всі міста';
+    state.cc = 'any'; ccSel.value = 'any';
+    state.stock = 'any'; stockSel.value = 'any';
+    state.min = 0; state.max = MAXP;
+    price.set(0, MAXP);
+    drawChips();
+    draw();
+  });
 
   drawChips();
   draw();
+
+  /* ширина плиток міняється після довантаження шрифту — переставити ще раз */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(centerChip);
+  window.addEventListener('resize', centerChip);
 })();
 </script>
 </body>

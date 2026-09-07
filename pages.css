@@ -16,6 +16,24 @@
 .pop-head .v{color:var(--paper)}
 .pop-ends{display:flex;justify-content:space-between;color:var(--paper-dim);font-size:10px;margin-top:2px}
 
+/* поля, у які ціну можна вписати руками */
+.pop-nums{display:flex;align-items:center;gap:8px;margin-top:12px;min-width:0}
+.pop-nums input{
+  flex:1 1 0;min-width:0;padding:11px 12px;
+  background:#0A0B0D;border:1px solid var(--line);color:var(--paper);
+  font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.06em;outline:none;
+  transition:border-color .2s;
+}
+.pop-nums input:focus{border-color:var(--sig)}
+.pop-nums input::placeholder{color:var(--paper-dim);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.pop-nums .dash{flex:none;color:var(--paper-dim)}
+.pop-nums .cur{flex:none;color:var(--paper-dim);font-size:10.5px;letter-spacing:.16em}
+/* у рядку фільтрів каталогу поля стоять поруч із повзунком, а не під ним;
+   «грн» тут зайве — його вже видно в підписі рядка */
+.fslider .pop-nums{margin-top:0;flex:0 0 172px;gap:6px}
+.fslider .pop-nums input{padding:9px 8px;font-size:11px;letter-spacing:0}
+.fslider .pop-nums .cur{display:none}
+
 .rng{position:relative;height:32px}
 .rng-rail{position:absolute;top:15px;left:0;right:0;height:2px;background:var(--line)}
 .rng-fill{position:absolute;top:15px;height:2px;background:var(--sig)}
@@ -61,13 +79,16 @@
 .chip:hover{color:var(--paper)}
 .chip.on{background:var(--sig);color:#fff}
 
-.fbar{display:grid;grid-template-columns:minmax(190px,.75fr) minmax(0,1.45fr) auto;border:1px solid var(--line);margin:0 var(--pad) clamp(26px,4vw,44px)}
-.fbar .fld{height:66px;border-right:1px solid var(--line)}
-.fslider{display:flex;align-items:center;gap:clamp(12px,1.6vw,22px);padding:0 clamp(16px,2vw,24px);border-right:1px solid var(--line)}
+/* гнучкий рядок, а не сітка: полів побільшало, і частина з них
+   ховається залежно від напрямку — колонки не мають лишати порожнеч */
+.fbar{display:flex;flex-wrap:wrap;border:1px solid var(--line);margin:0 var(--pad) clamp(26px,4vw,44px)}
+/* селекти не розтягуються — місце потрібне повзунку з полями ціни */
+.fbar .fld{flex:0 1 232px;min-width:0;height:66px;border-right:1px solid var(--line)}
+.fslider{flex:1 1 340px;min-width:0;display:flex;align-items:center;gap:clamp(10px,1.2vw,18px);padding:0 clamp(14px,1.6vw,20px);border-right:1px solid var(--line)}
 .fslider .rng{flex:1;min-width:120px}
 .fslider .k{font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);white-space:nowrap}
 .fslider .v{font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.06em;color:var(--paper);white-space:nowrap}
-.fcount{display:flex;align-items:center;padding:0 clamp(16px,2vw,26px);font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);white-space:nowrap}
+.fcount{flex:0 0 auto;display:flex;align-items:center;padding:0 clamp(16px,2vw,26px);font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);white-space:nowrap}
 .fcount b{color:var(--paper);font-weight:500;margin-right:6px}
 
 /* ---------------- СІТКА КАРТОК ---------------- */
@@ -130,6 +151,26 @@
 .btn-like svg{width:15px;height:15px}
 .btn-like:hover{border-color:var(--paper)}
 .btn-like.on{background:var(--sig);border-color:var(--sig);color:#fff;--hf:currentColor}
+/* меню «поділитись» — відкривається просто під кнопкою */
+.share-wrap{position:relative;display:inline-flex}
+.share-pop{
+  position:absolute;top:calc(100% + 6px);left:0;z-index:40;min-width:min(240px,80vw);
+  display:grid;background:#0F1115;border:1px solid var(--line);
+}
+.share-row{
+  text-align:left;padding:13px 16px;border-bottom:1px solid var(--line-soft);color:var(--paper-dim);
+  font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  transition:background .18s,color .18s;
+}
+.share-row:last-child{border-bottom:0}
+.share-row:hover{background:var(--sig);color:#fff}
+/* горизонтальну позицію доводить скрипт: кнопка може стояти будь-де в рядку,
+   тому меню зсувається рівно настільки, щоб не вилізти за край екрана */
+
+/* характеристики групами */
+.spec-group + .spec-group{margin-top:clamp(24px,2.8vw,38px)}
+.spec-group h3{margin:0 0 6px;font-family:var(--f-mono);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--sig)}
+
 .p-desc{margin:0 0 26px;color:var(--paper-dim);font-size:15px;line-height:1.72}
 .p-desc b{color:var(--paper);font-weight:400}
 
@@ -142,7 +183,7 @@
   .prod-media{border-right:0;border-bottom:1px solid var(--line);padding-right:var(--pad)}
   .prod-info{padding-left:var(--pad)}
   .phead{grid-template-columns:1fr}
-  .fbar{grid-template-columns:1fr}
+  .fbar > *{flex:1 1 100%}
   .fbar .fld{border-right:0;border-bottom:1px solid var(--line)}
   .fslider{border-right:0;border-bottom:1px solid var(--line);padding:16px clamp(16px,2vw,24px)}
   .fcount{padding:16px clamp(16px,2vw,24px)}
@@ -270,11 +311,18 @@
 .srch-none{color:var(--paper-dim);font-size:15px;line-height:1.7;padding-top:22px}
 .srch-none a{color:var(--sig)}
 
-/* мітка активного пошуку в каталозі */
+/* мітка активного пошуку в каталозі — знімається одним дотиком */
 .qtag{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 var(--pad) 18px;color:var(--paper-dim)}
-.qtag b{color:var(--paper);font-weight:500}
-.qtag a{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);padding:6px 11px;color:var(--paper-dim)}
-.qtag a:hover{background:var(--sig);border-color:var(--sig);color:#fff}
+.qtag .k{font-family:var(--f-mono);font-weight:500;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase}
+.qchip{
+  display:inline-flex;align-items:center;gap:11px;min-height:38px;padding:8px 13px;
+  border:1px solid var(--sig);color:var(--paper);
+  font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  transition:background .2s,color .2s;
+}
+.qchip .x{color:var(--sig);font-size:13px;line-height:1;transition:color .2s}
+.qchip:hover{background:var(--sig);color:#fff}
+.qchip:hover .x{color:#fff}
 
 /* ============================================================
    ПРО НАС / КОНТАКТИ
@@ -336,4 +384,51 @@
   .srch-bar{height:72px;gap:12px}
   .sr{flex-direction:column;align-items:flex-start;gap:8px}
   .cb-form{grid-template-columns:1fr}
+}
+
+/* ============================================================
+   МОБІЛЬНА ЗРУЧНІСТЬ
+   Головне: у повзунок ціни треба попадати пальцем, а не мишею,
+   і чипи категорій мають гортатись, а не ламатись у три ряди.
+   ============================================================ */
+
+/* чипи категорій — одна стрічка з горизонтальним гортанням */
+@media (max-width:900px){
+  .chips{
+    flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none;white-space:nowrap;padding:15px 18px}
+}
+
+@media (max-width:720px){
+  /* повзунок: широкі ручки й висока смуга, щоб палець попадав */
+  .rng{height:48px}
+  .rng-rail,.rng-fill{top:23px;height:3px}
+  .rng input{height:48px}
+  .rng input::-webkit-slider-thumb{width:26px;height:34px}
+  .rng input::-moz-range-thumb{width:26px;height:34px}
+
+  /* випадний блок ціни на всю ширину поля */
+  .pop{left:-1px;right:-1px;min-width:0;padding:16px 16px 18px}
+  .pop-head{flex-wrap:wrap;gap:4px 12px}
+
+  /* рядок фільтра ціни: підпис, потім поля вводу, потім повзунок — кожне своїм рядком */
+  .fslider{flex-wrap:wrap;gap:8px 12px;padding:14px clamp(16px,2vw,24px) 6px}
+  .fslider .pop-nums{flex:1 0 100%;order:2;min-width:0}
+  .fslider .pop-nums input{padding:12px 12px;font-size:13px}
+  .fslider .rng{flex:1 0 100%;order:3;min-width:0}
+
+  /* дотикові цілі не менші за 44 px */
+  .fld{height:58px}
+  .find{height:58px}
+  .btn-sq{padding:14px 18px}
+  .tool{width:42px;height:42px}
+  .c-go{width:40px;height:40px}
+  .like{height:48px;min-width:48px}
+  .srch-tip{padding:10px 14px}
+  .to-top{padding:12px 16px}
+  .qchip{min-height:44px;padding:11px 14px}
+  .sr{padding:18px 0}
 }
