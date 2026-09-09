@@ -1,5 +1,5 @@
 /* ============================================================
-   MOTO MARKET WEST — арт-дирекція: технічна карта / сервісний
+   Мотосалон — арт-дирекція: технічна карта / сервісний
    мануал. Прямі кути, волосяні лінії, сигнальний помаранчевий.
    ============================================================ */
 
@@ -67,9 +67,17 @@ button,a,select,input,label,.chip,.step{touch-action:manipulation}
 }
 .topbar.shrunk{height:58px;background:rgba(10,10,11,.95);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
 .brandmark{display:flex;align-items:center;flex:none}
-.brandmark img{display:block;width:auto;height:clamp(30px,3vw,42px);transition:height .3s ease}
-.topbar.shrunk .brandmark img{height:clamp(26px,2.4vw,32px)}
-footer .brandmark img{height:clamp(38px,4vw,54px)}
+/* текстовий знак замість картинки: місце під логотип клієнта */
+.wm{display:flex;align-items:center;gap:9px;font-family:var(--f-disp);font-weight:700;
+    text-transform:uppercase;letter-spacing:.01em;line-height:1;white-space:nowrap;
+    font-size:clamp(26px,2.8vw,38px);transition:font-size .3s ease}
+.wm i{width:9px;height:9px;flex:none;background:var(--sig);transition:width .3s ease,height .3s ease}
+.wm b{font-weight:700;color:var(--paper)}
+.wm em{font-style:normal;font-weight:400;color:var(--paper-dim)}
+.brandmark:hover .wm em{color:var(--sig)}
+.topbar.shrunk .wm{font-size:clamp(22px,2.2vw,29px)}
+.topbar.shrunk .wm i{width:7px;height:7px}
+footer .wm{font-size:clamp(32px,3.6vw,46px)}
 .nav{display:flex;justify-content:flex-start;gap:clamp(10px,1.5vw,22px);padding-left:clamp(6px,1.4vw,26px)}
 .nav a{position:relative;display:flex;align-items:center;gap:6px;padding:8px 0;font-size:13.5px;white-space:nowrap;color:var(--paper);opacity:.86;transition:opacity .2s,color .2s}
 .nav a .cav{width:9px;height:9px;flex:none;color:var(--paper-dim)}

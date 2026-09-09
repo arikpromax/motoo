@@ -1,5 +1,5 @@
 /* ============================================================
-   MOTO MARKET WEST — спільна логіка сторінок.
+   МОТОСАЛОН — спільна логіка сторінок.
 
    ЩО ДЕ ЗБЕРІГАЄТЬСЯ:
    • «Збережене» (що саме вподобав ЦЕЙ відвідувач) — у localStorage його
@@ -26,7 +26,7 @@
 var LIKES = {
   url: '',              // напр. 'https://abcdefgh.supabase.co'
   key: '',              // ключ anon public
-  site: 'motomarket',   // ключ цього сайту в спільній базі платформи
+  site: 'demo',   // ключ цього сайту в спільній базі платформи
   table: 'likes',
   fn: 'bump_like'
 };
@@ -211,9 +211,9 @@ var MM = (function(){
 
   /* чи є позиція в залі; якщо вибрано місто — дивимось саме його */
   function inStock(p, city){
-    if (city === 'Ковель') return p.kovel === 'Є';
-    if (city === 'Шацьк')  return p.shatsk === 'Є';
-    return p.kovel === 'Є' || p.shatsk === 'Є';
+    if (city === 'Точка 1') return p.shop1 === 'Є';
+    if (city === 'Точка 2')  return p.shop2 === 'Є';
+    return p.shop1 === 'Є' || p.shop2 === 'Є';
   }
 
   function byId(id){
@@ -371,7 +371,7 @@ var MM = (function(){
       var h = hay(p);
       if (!parts.every(function(w){ return h.indexOf(w) !== -1; })) return;
       // збіг у бренді чи назві важливіший за збіг у місті або характеристиці:
-      // «кове» має спершу показати KOVE, а вже потім техніку з Ковеля
+      // «кове» має спершу показати KOVE, а вже потім техніку з тією ж назвою
       var head = fold(p.brand + ' ' + p.name);
       var score = parts.every(function(w){ return head.indexOf(w) !== -1; }) ? 2
                 : (parts.some(function(w){ return head.indexOf(w) !== -1; }) ? 1 : 0);
@@ -414,7 +414,7 @@ var MM = (function(){
       var list = find(q);
       if (!list.length){
         res.innerHTML = '<p class="srch-none">Нічого не знайшли за запитом «' + q + '».<br>' +
-          'Наберіть <a href="tel:+380689879872">068 987 98 72</a> — підберемо вручну.</p>';
+          'Наберіть <a href="tel:+380000000000">0XX XXX XX XX</a> — підберемо вручну.</p>';
         return;
       }
       res.innerHTML =
